@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
-import MyButton from '../util/MyButton';
 import ImageUpload from './ImageUpload';
+import EditDetails from './EditDetails';
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -13,7 +14,6 @@ import Avatar from '@material-ui/core/Avatar';
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
 import WebIcon from '@material-ui/icons/Web';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
-import EditIcon from '@material-ui/icons/Edit';
 
 
 const styles = (theme) => ({
@@ -41,7 +41,7 @@ const styles = (theme) => ({
 			margin: '0 0 10px 0',
 		},
 		'& a': {
-			color: '#00bcd4',
+			color: '#4267B2',
 		},
 		'& svg': {
 			marginRight: 6,
@@ -79,7 +79,11 @@ const Profile = ({
 		      <ImageUpload />
 				</div>
 	      <div className={classes.profileDetails}>
-	      	<Typography variant='h5' color='primary'>
+	      	<Typography
+	      		component={Link}
+	      		to={`/users/${username}`}
+	      		variant='h5'
+	      	>
 		      	{username}
 		      </Typography>
 		      <hr />
@@ -111,9 +115,7 @@ const Profile = ({
 		      <span>Joined {dayjs(createdAt).format('MMM DD YYYY')}</span>
 		      <hr />
 		      <div className={classes.editButtonContainer}>
-		      	<MyButton tip='Edit Details'>
-			      	<EditIcon color='primary' />
-			      </MyButton>
+		      	<EditDetails />
 		      </div>
 	      </div>
 			</Fragment>

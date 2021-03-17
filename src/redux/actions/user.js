@@ -7,6 +7,9 @@ import {
 	SET_USER_NOTIFICATIONS,
 	SET_USER_LIKES,
 	USER_NOT_AUTHENTICATED,
+	SET_USER_IMAGE_URL,
+	SET_BLOG_IMAGE_URL,
+	SET_USER_DETAILS,
 } from '../types';
 import {
 	setErrors,
@@ -23,6 +26,7 @@ import {
 import {
 	validateLogin,
 	validateSignup,
+	reduceUserDetails,
 } from '../../util/validators';
 
 export const loginUser = (userData, history) => (dispatch) => {
@@ -211,6 +215,10 @@ export const logoutUser = () => (dispatch) => {
 };
 
 export const uploadImage = (imageFile, userId) => (dispatch) => {
+	if (imageFile.type !== 'image/png' && imageFile.type !== 'image/jpeg') {
+		return;
+	}
+
 	const metadata = {
     contentType: imageFile.type,
   };
@@ -221,13 +229,74 @@ export const uploadImage = (imageFile, userId) => (dispatch) => {
 	ref
 		.put(imageFile, metadata)
 		.then(() => {
+			const batch = db.batch();
+			const imageUrl = `${imagesUrl}${filename}?alt=media`;
+			dispatch({
+				type: SET_USER_IMAGE_URL,
+				payload: imageUrl,
+			});
+			// update user imageUrl
 			db
 				.doc(`/users/${userId}`)  
-				.update({
-					imageUrl: `${imagesUrl}${filename}?alt=media`,
+				.update({ imageUrl })
+				.catch((err) => {
+					console.error(err);
+				});
+			// update user blog posts imageUrl
+			db
+				.collection('blogs')
+				.where('username', '==', userId)
+				.get()
+				.then((blogsSnapshot) => {
+					blogsSnapshot.forEach((blog) => {
+						batch.update(blog.ref, { imageUrl });
+					});
+					// commit update
+					batch
+						.commit()
+						.then(() => {
+							dispatch({
+								type: SET_BLOG_IMAGE_URL,
+								payload: {
+									imageUrl,
+									username: userId,
+								},
+							});
+						})
+						.catch((err) => {
+							console.error(err);
+						});
 				})
+				.catch((err) => {
+					console.error(err);
+				});
 		})
 		.catch((err) => {
 			console.error(err);
 		});
+};
+
+export const editUserDetails = (
+	newUserDetails,
+	oldUserDetails,
+	userId
+) => (dispatch) => {
+	const userDetails = reduceUserDetails(newUserDetails, oldUserDetails);
+	
+	if (Object.keys(userDetails).length === 0) {
+		return;
+	}
+	
+	db
+		.doc(`/users/${userId}`)
+		.update(userDetails)
+		.then(() => {
+			dispatch({
+				type: SET_USER_DETAILS,
+				payload: userDetails,
+			});
+		})
+		.catch((err) => {
+			console.error(err);
+		})
 };

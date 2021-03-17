@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Blogs from '../components/Blogs';
 import Profile from '../components/Profile';
 // MUI Components

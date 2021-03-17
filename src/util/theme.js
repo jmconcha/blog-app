@@ -21,6 +21,9 @@ const theme =  {
       width: 50,
       height: 50,
     },
+    appIconColor: {
+      color: '#4267B2',
+    },
     formContainer: {
       textAlign: 'center'
     },
@@ -65,8 +68,12 @@ const theme =  {
     },
     profileImage: {
       width: '100%',
-      height: 'auto',
+      height: '100%',
       objectFit: 'cover',
+      borderRadius: '50%',
+    },
+    navIcon: {
+      color: '#FFFFFF',
     },
   },
 };

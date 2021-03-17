@@ -57,7 +57,7 @@ const Signup = ({
 						<TextField
 							name='email'
 							type='email'
-							label='Email'
+							label='Email Address'
 							value={email}
 							error={Boolean(errors?.email)}
 							helperText={errors?.email}

@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getBlogs } from '../redux/actions/data';
+import BlogDialog from './BlogDialog';
+import MyButton from '../util/MyButton';
+import { deleteBlog } from '../redux/actions/data';
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
@@ -18,24 +19,39 @@ import Typography from '@material-ui/core/Typography';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import MessageIcon from '@material-ui/icons/Message';
-import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
+// MUI Icons
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = (theme) => ({
   ...theme.myCSS,
   root: {
+    position: 'relative',
     maxWidth: 700,
     width: '80%',
     marginBottom: 20,
     padding: '6px 10px',
   },
   cardActions: {
+    position: 'relative',
     padding: 0,
     margin: 0,
+  },
+  deleteButton: {
+    position: 'absolute',
+    top: '9%',
+    left: '91%',
+  },
+  deleteIcon: {
+    '&:hover': {
+      color: '#ff3d00',
+    },
   },
 });
 
 const Blog = ({
   classes,
+  deleteBlog,
+  authenticatedUser,
 	blog: {
 		blogId,
 		createdAt,
@@ -48,6 +64,10 @@ const Blog = ({
 }) => {
 	dayjs.extend(relativeTime);
 
+  const handleDeleteClick = () => {
+    deleteBlog(blogId);
+  };
+
 	return (
 		<Card className={classes.root}>
 			 <CardHeader
@@ -57,9 +77,29 @@ const Blog = ({
           </Avatar>
         }
         title={
-        	<Typography variant='h6' color='primary'>
-        		{username}
-        	</Typography>
+        	<Fragment>
+            <Typography
+              component={Link}
+              to={`/users/${username}`}
+              variant='h6'
+              className={classes.appIconColor}
+            >
+              {username}
+            </Typography>
+            {authenticatedUser === username ? (
+              <MyButton
+                tip="Delete Blog"
+                buttonClassName={classes.deleteButton}
+                onClick={handleDeleteClick}
+              >
+                <DeleteIcon
+                  color="inherit"
+                  className={classes.deleteIcon}
+                  fontSize="small"
+                 />
+              </MyButton>
+            ) : (null)}
+          </Fragment>
         }
         subheader={dayjs(createdAt).fromNow()}
       />
@@ -79,9 +119,7 @@ const Blog = ({
         <IconButton aria-label="comments">
           <MessageIcon color='primary' />
         </IconButton>
-         <IconButton>
-          <UnfoldMoreIcon color='primary' />
-         </IconButton>
+         <BlogDialog />
       </CardActions>
 		</Card>
 	);
@@ -89,7 +127,15 @@ const Blog = ({
 Blog.propTypes = {
   classes: PropTypes.object.isRequired,
 	blog: PropTypes.object.isRequired,
+  deleteBlog: PropTypes.func.isRequired,
+  authenticatedUser: PropTypes.string.isRequired,
 };
 
+const mapStateToProps = (state) => ({
+  authenticatedUser: state.user.credentials.username,
+});
 
-export default withStyles(styles)(Blog);
+export default connect(
+  mapStateToProps,
+  { deleteBlog }
+)(withStyles(styles)(Blog));

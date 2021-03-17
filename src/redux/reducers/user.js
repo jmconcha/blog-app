@@ -6,6 +6,8 @@ import {
 	SET_USER_CREDENTIALS,
 	SET_USER_NOTIFICATIONS,
 	SET_USER_LIKES,
+	SET_USER_IMAGE_URL,
+	SET_USER_DETAILS,
 } from '../types';
 
 const user = (
@@ -39,7 +41,7 @@ const user = (
 				...state,
 				loading: false,
 				authenticated: false,
-				credentials: null,
+				credentials: {},
 				notifications: [],
 				likes: [],
 			};
@@ -57,6 +59,22 @@ const user = (
 			return {
 				...state,
 				likes: action.payload,
+			};
+		case SET_USER_IMAGE_URL:
+			return {
+				...state,
+				credentials: {
+					...state.credentials,
+					imageUrl: action.payload,
+				},
+			};
+		case SET_USER_DETAILS:
+			return {
+				...state,
+				credentials: {
+					...state.credentials,
+					...action.payload,
+				}
 			};
 		default:
 			return state;

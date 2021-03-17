@@ -1,8 +1,6 @@
-import PropTypes from 'prop-types';
 import { 
 	BrowserRouter as Router, 
 	Route,
-	Link,
 	Switch,
 } from 'react-router-dom';
 import { Provider } from 'react-redux';

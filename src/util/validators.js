@@ -1,6 +1,7 @@
 // checks if data is empty, return true if empty otherwise false
 const isEmpty = (data) => data.trim() === '';
-// validate login data, email and password
+
+// validate login data (email, password)
 export const validateLogin = (data) => {
 	const errors = {};
 
@@ -13,6 +14,7 @@ export const validateLogin = (data) => {
 	};
 };
 
+// validate signup data (email, password, confirmPassword, username)
 export const validateSignup = (data) => {
 	const errors = {};
 	// regular expression to validate email
@@ -29,4 +31,23 @@ export const validateSignup = (data) => {
 		errors,
 		isValid: Object.keys(errors).length < 1,
 	};
+};
+
+// validate user details (bio, website, location)
+export const reduceUserDetails = (newData, oldData) => {
+	const userData = {};
+	//checks each property key and value of newData and oldData if the same
+	// does not include in userData if true and not empty
+	// otherwise include in userData
+	for (let key in newData) {
+		if (newData[key] !== oldData[key]) {
+			userData[key] = newData[key];
+		}
+	}
+
+	if (userData.website && !userData.website.startsWith('http')) {
+		userData.website = `http://${userData.website}`;
+	}
+
+	return userData;
 };
