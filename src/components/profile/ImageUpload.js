@@ -1,8 +1,8 @@
 import React, { Fragment, useRef } from 'react';
 import PropTypes from 'prop-types';
-import MyButton from '../util/MyButton';
+import MyButton from '../../util/MyButton';
 import { connect } from 'react-redux';
-import { uploadImage } from '../redux/actions/user';
+import { uploadImage } from '../../redux/actions/user';
 // MUI Icons
 import { makeStyles } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/Edit';

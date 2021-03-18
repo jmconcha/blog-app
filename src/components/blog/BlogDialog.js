@@ -2,8 +2,9 @@ import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
-import MyButton from '../util/MyButton';
-import Comment from './Comment';
+import MyButton from '../../util/MyButton';
+import CommentForm from './CommentForm';
+import Comments from './Comments';
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
 import MuiLink from '@material-ui/core/Link';
@@ -126,7 +127,8 @@ const BlogDialog = ({
 			          <MessageIcon color='primary' />
 			        </IconButton>
 			        <hr className={classes.visibleSeparator} />
-			        <Comment blogId={blogId} />
+			        <CommentForm blogId={blogId} />
+			        <Comments blogId={blogId} />
 						</Grid>
 			  	</Grid>
 	      </DialogContent>

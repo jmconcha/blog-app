@@ -12,7 +12,7 @@ import Signup from './pages/Signup';
 import './App.css';
 import themeObj from './util/theme';
 import AuthRoute from './util/AuthRoute';
-import NavBar from './components/NavBar';
+import NavBar from './components/layout/NavBar';
 import { getUserData } from './redux/actions/user';
 // MUI Components
 import {

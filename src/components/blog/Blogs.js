@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getBlogs } from '../redux/actions/data';
+import { getBlogs } from '../../redux/actions/data';
 import Blog from './Blog';
 
 const Blogs = ({

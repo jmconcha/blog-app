@@ -5,8 +5,8 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import BlogDialog from './BlogDialog';
-import MyButton from '../util/MyButton';
-import { deleteBlog } from '../redux/actions/data';
+import MyButton from '../../util/MyButton';
+import { deleteBlog } from '../../redux/actions/data';
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -131,7 +131,7 @@ Blog.propTypes = {
   classes: PropTypes.object.isRequired,
 	blog: PropTypes.object.isRequired,
   deleteBlog: PropTypes.func.isRequired,
-  authenticatedUser: PropTypes.string.isRequired,
+  authenticatedUser: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({

@@ -1,8 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { editUserDetails } from '../redux/actions/user';
-import MyButton from '../util/MyButton';
+import { editUserDetails } from '../../redux/actions/user';
+import MyButton from '../../util/MyButton';
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/Edit';

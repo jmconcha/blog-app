@@ -2,10 +2,10 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import AppIcon from '../images/blog.png';
-import MyButton from '../util/MyButton';
-import { logoutUser } from '../redux/actions/user';
-import PostBlog from './PostBlog';
+import AppIcon from '../../images/blog.png';
+import MyButton from '../../util/MyButton';
+import { logoutUser } from '../../redux/actions/user';
+import PostBlog from '../blog/PostBlog';
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';

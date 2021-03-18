@@ -1,8 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { postBlog } from '../redux/actions/data';
-import MyButton from '../util/MyButton';
+import { postBlog } from '../../redux/actions/data';
+import MyButton from '../../util/MyButton';
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';

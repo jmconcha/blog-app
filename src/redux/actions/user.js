@@ -127,7 +127,7 @@ export const signupUser = (newUserData, history) => (dispatch) => {
 							dispatch({
 								type: LOADING_USER,
 							});
-							newUserData.imageUrl = `${imagesUrl}default.png`;
+							newUserData.imageUrl = `${imagesUrl}default.png?alt=media`;
 							newUserData.createdAt = new Date().toISOString();
 							// store new user data to firestore
 							return db

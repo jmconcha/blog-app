@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { commentOnBlog } from '../redux/actions/data';
+import { commentOnBlog } from '../../redux/actions/data';
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';

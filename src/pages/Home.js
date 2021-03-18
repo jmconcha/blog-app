@@ -1,6 +1,6 @@
 import React from 'react';
-import Blogs from '../components/Blogs';
-import Profile from '../components/Profile';
+import Blogs from '../components/blog/Blogs';
+import Profile from '../components/profile/Profile';
 // MUI Components
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
