@@ -3,9 +3,11 @@ import {
 	LOADING_DATA,
 	DONE_LOADING_DATA,
 	SET_BLOGS,
-	SET_BLOG,
 	ADD_BLOG,
 	REMOVE_BLOG,
+	SET_LIKES,
+	SET_COMMENTS,
+	ADD_COMMENT,
 } from '../types';
 import {
 	setErrors,
@@ -81,7 +83,6 @@ export const deleteBlog = (blogId) => (dispatch) => {
 		.doc(`/blogs/${blogId}`)
 		.delete()
 		.then(() => {
-			console.log('deleted', blogId);
 			dispatch({
 				type: REMOVE_BLOG,
 				payload: blogId,
@@ -90,4 +91,77 @@ export const deleteBlog = (blogId) => (dispatch) => {
 		.catch((err) => {
 			console.error(err);
 		})
+};
+
+export const getComments = (blogId) => (dispatch) => {
+	console.log(blogId);
+	if (!blogId) {
+		console.log('no blogId');
+		return;
+	};
+	dispatch(loadingUI());
+	// fetch blog comments
+	db
+		.collection('comments')
+		.orderBy('createdAt', 'desc')
+		.where('blogId', '==', blogId)
+		.get()
+		.then((commentsSnapshot) => {
+			const commentsData = [];
+
+			commentsSnapshot.forEach((comment) => {
+				commentsData.push({
+					commentId: comment.id,
+					...comment.data(),
+				});
+			});
+
+			dispatch({
+				type: SET_COMMENTS,
+				payload: commentsData,
+			});
+			dispatch(doneLoadingUI());
+		})
+		.catch((err) => {
+			console.error(err);
+		});
+};
+
+export const commentOnBlog = (
+	comment,
+	blogId,
+	username,
+	imageUrl
+) => (dispatch) => {
+	dispatch(loadingUI());
+	if (comment.trim() === '') {
+		dispatch(doneLoadingUI());
+		dispatch(
+			setErrors({ comment: 'Must no be empty' })
+		);
+	} else {
+		const newCommentData = {
+			comment,
+			username,
+			imageUrl,
+			blogId,
+			createdAt: new Date().toISOString(),
+		};
+
+		db
+			.collection('/comments')
+			.add(newCommentData)
+			.then((commentSnapshot) => {
+				newCommentData.commentId = commentSnapshot.id;
+				dispatch(clearErrors());
+				dispatch(doneLoadingUI());
+				dispatch({
+					type: ADD_COMMENT,
+					payload: newCommentData,
+				});
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	}
 };

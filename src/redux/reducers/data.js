@@ -2,17 +2,18 @@ import {
 	LOADING_DATA,
 	DONE_LOADING_DATA,
 	SET_BLOGS,
-	SET_BLOG,
 	ADD_BLOG,
 	SET_BLOG_IMAGE_URL,
 	REMOVE_BLOG,
+	SET_COMMENTS,
+	ADD_COMMENT,
 } from '../types';
 
 const data = (
 	state = {
 		loading: false,
 		blogs: [],
-		blog: null,
+		comments: [],
 	},
 	action
 ) => {
@@ -31,11 +32,6 @@ const data = (
 			return {
 				...state,
 				blogs: action.payload,
-			};
-		case SET_BLOG:
-			return {
-				...state,
-				blog: action.payload,
 			};
 		case SET_BLOG_IMAGE_URL:
 			return {
@@ -64,6 +60,19 @@ const data = (
 				blogs: state.blogs.filter(
 					(blog) => blog.blogId !== action.payload
 				),
+			};
+		case SET_COMMENTS:
+			return {
+				...state,
+				comments: action.payload,
+			};
+		case ADD_COMMENT: 
+			return {
+				...state,
+				comments: [
+					...state.comments,
+					action.payload,
+				],
 			};
 		default:
 			return state;

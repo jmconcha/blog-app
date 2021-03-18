@@ -17,9 +17,10 @@ export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const LOADING_DATA = 'LOADING_DATA';
 export const DONE_LOADING_DATA = 'DONE_LOADING_DATA';
 export const SET_BLOGS = 'SET_BLOGS';
-export const SET_BLOG = 'SET_BLOG';
 export const ADD_BLOG = 'ADD_BLOG';
 export const REMOVE_BLOG = 'REMOVE_BLOG';
 export const SET_BLOG_IMAGE_URL = 'SET_BLOG_IMAGE_URL';
+export const SET_COMMENTS = 'SET_COMMENTS';
+export const ADD_COMMENT = 'ADD_COMMENT';
 // types format
 export const type = 'type';

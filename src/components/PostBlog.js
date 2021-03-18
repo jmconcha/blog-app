@@ -139,8 +139,8 @@ PostBlog.propTypes = {
 	postBlog: PropTypes.func.isRequired,
 	loading: PropTypes.bool.isRequired,
 	errors: PropTypes.object.isRequired,
-	username: PropTypes.string.isRequired,
-	imageUrl: PropTypes.string.isRequired,
+	imageUrl: PropTypes.string,
+	username: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({

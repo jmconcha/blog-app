@@ -48,7 +48,7 @@ const ImageUpload = ({ uploadImage, username }) => {
 };
 ImageUpload.propTypes = {
 	uploadImage: PropTypes.func.isRequired,
-	username: PropTypes.string.isRequired,
+	username: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({

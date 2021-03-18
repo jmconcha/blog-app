@@ -9,6 +9,7 @@ import EditDetails from './EditDetails';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import MuiLink from '@material-ui/core/Link';
 import Avatar from '@material-ui/core/Avatar';
 // MUI Icons
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
@@ -74,18 +75,18 @@ const Profile = ({
 			<Fragment>
 				<div className={classes.imageContainer}>
 					<Avatar aria-label="Profile Picture" className={classes.avatar}>
-		        <img src={imageUrl} alt='Profile Picture' className={classes.profileImage} />
+		        <img src={imageUrl} alt='Profile' className={classes.profileImage} />
 		      </Avatar>
 		      <ImageUpload />
 				</div>
 	      <div className={classes.profileDetails}>
-	      	<Typography
+	      	<MuiLink
 	      		component={Link}
 	      		to={`/users/${username}`}
 	      		variant='h5'
 	      	>
 		      	{username}
-		      </Typography>
+		      </MuiLink>
 		      <hr />
 	      	{bio && (
 		      	<Fragment>
@@ -98,7 +99,7 @@ const Profile = ({
 		      {website && (
 		      	<Fragment>
 			      	<WebIcon color='primary' />
-			      	<a href={website} target='_blank' rel='noopener norefferer'>
+			      	<a href={website} target='_blank' rel='noopener noreferrer'>
 			      		{website}
 			      	</a>
 		      		<hr />

@@ -16,6 +16,7 @@ import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import MuiLink from '@material-ui/core/Link';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import MessageIcon from '@material-ui/icons/Message';
@@ -52,17 +53,19 @@ const Blog = ({
   classes,
   deleteBlog,
   authenticatedUser,
-	blog: {
-		blogId,
-		createdAt,
-		imageUrl,
-		username,
-		likeCount,
-		commentCount,
-		body,
-	},
+  blog,
 }) => {
 	dayjs.extend(relativeTime);
+
+  const {
+    blogId,
+    createdAt,
+    imageUrl,
+    username,
+    likeCount,
+    commentCount,
+    body,
+  } = blog;
 
   const handleDeleteClick = () => {
     deleteBlog(blogId);
@@ -73,19 +76,19 @@ const Blog = ({
 			 <CardHeader
         avatar={
           <Avatar aria-label="Profile Picture" className={classes.avatar}>
-            <img src={imageUrl} alt='Profile Picture' className={classes.profileImage} />
+            <img src={imageUrl} alt='Profile' className={classes.profileImage} />
           </Avatar>
         }
         title={
         	<Fragment>
-            <Typography
+            <MuiLink
               component={Link}
               to={`/users/${username}`}
               variant='h6'
               className={classes.appIconColor}
             >
               {username}
-            </Typography>
+            </MuiLink>
             {authenticatedUser === username ? (
               <MyButton
                 tip="Delete Blog"
@@ -119,7 +122,7 @@ const Blog = ({
         <IconButton aria-label="comments">
           <MessageIcon color='primary' />
         </IconButton>
-         <BlogDialog />
+         <BlogDialog blog={blog}/>
       </CardActions>
 		</Card>
 	);
