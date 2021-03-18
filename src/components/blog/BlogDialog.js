@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import MyButton from '../../util/MyButton';
 import CommentForm from './CommentForm';
 import Comments from './Comments';
+import Like from './Like';
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
 import MuiLink from '@material-ui/core/Link';
@@ -27,8 +28,8 @@ const styles = (theme) => ({
 	...theme.myCSS,
   closeButton: {
     position: 'absolute',
-    top: '5%',
-    left: '91%',
+    top: '2%',
+    left: '89%',
   },
   closeIcon: {
     '&:hover': {
@@ -120,15 +121,14 @@ const BlogDialog = ({
 							<Typography variant="body1" color="inherit"  className={classes.blogBody}>
 								{body}
 							</Typography>
-							<IconButton aria-label="like">
-			          <FavoriteBorderIcon color='primary' />
-			        </IconButton>
+							<Like blogId={blogId} />
 			        <IconButton aria-label="comments">
 			          <MessageIcon color='primary' />
 			        </IconButton>
 			        <hr className={classes.visibleSeparator} />
 			        <CommentForm blogId={blogId} />
 			        <Comments blogId={blogId} />
+			        <hr className={classes.invisibleSeparator} />
 						</Grid>
 			  	</Grid>
 	      </DialogContent>

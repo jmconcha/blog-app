@@ -10,6 +10,8 @@ import {
 	SET_USER_IMAGE_URL,
 	SET_BLOG_IMAGE_URL,
 	SET_USER_DETAILS,
+	ADD_USER_LIKE,
+	REMOVE_USER_LIKE,
 } from '../types';
 import {
 	setErrors,
@@ -82,15 +84,19 @@ export const getUserData = (userId) => (dispatch) => {
 		.get()
 		.then((userSnapshots) => {
 			const userDoc = userSnapshots.docs[0];
+			const userData = {
+				username: userDoc.id,
+				...userDoc.data(),
+			};
 			dispatch(
-				setUserCredentials({
-					username: userDoc.id,
-					...userDoc.data(),
-				})
+				setUserCredentials(userData)
 			);
 			dispatch({
 				type: DONE_LOADING_USER,
 			});
+			dispatch(
+				getUserNotifications(userData.username)
+			);
 		})
 		.catch((err) => {
 			dispatch({
@@ -100,6 +106,28 @@ export const getUserData = (userId) => (dispatch) => {
 		});
 };
 
+const getUserNotifications = (username) => (dispatch) => {
+	db
+		.collection('likes')
+		.where('username', '==', username)
+		.get()
+		.then((likesSnapshot) => {
+			const likesData = [];
+			likesSnapshot.forEach((like) => {
+				likesData.push({
+					likeId: like.id,
+					...like.data(),
+				});
+			});
+			dispatch({
+				type: SET_USER_LIKES,
+				payload: likesData,
+			})
+		})
+		.catch((err) => {
+			console.error(err);
+		});
+};
 
 export const signupUser = (newUserData, history) => (dispatch) => {
 	dispatch(loadingUI());
@@ -299,4 +327,18 @@ export const editUserDetails = (
 		.catch((err) => {
 			console.error(err);
 		})
+};
+
+export const addUserLike = (likeData) => (dispatch) => {
+	dispatch({
+		type: ADD_USER_LIKE,
+		payload: likeData,
+	});
+};
+
+export const removeUserLike = (likeId) => (dispatch) => {
+	dispatch({
+		type: REMOVE_USER_LIKE,
+		payload: likeId,
+	});
 };

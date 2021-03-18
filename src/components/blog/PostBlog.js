@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { postBlog } from '../../redux/actions/data';
+import { clearErrors } from '../../redux/actions/ui';
 import MyButton from '../../util/MyButton';
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
@@ -40,10 +41,11 @@ const styles = (theme) => ({
 const PostBlog = ({
 	classes,
 	postBlog,
+	clearErrors,
 	loading,
 	errors,
 	username,
-	imageUrl,
+	imageUrl
 }) => {
 	const [open, setOpen] = useState(false);
 	const [body, setBody] = useState('');
@@ -56,6 +58,9 @@ const PostBlog = ({
 		setOpen(false);
 		if (body !== '') {
 			setBody('');
+		}
+		if (errors.body) {
+			clearErrors();
 		}
 	};
 
@@ -137,6 +142,7 @@ const PostBlog = ({
 PostBlog.propTypes = {
 	classes: PropTypes.object.isRequired,
 	postBlog: PropTypes.func.isRequired,
+	clearErrors: PropTypes.func.isRequired,
 	loading: PropTypes.bool.isRequired,
 	errors: PropTypes.object.isRequired,
 	imageUrl: PropTypes.string,
@@ -152,5 +158,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
 	mapStateToProps,
-	{ postBlog }
+	{ clearErrors, postBlog }
 )(withStyles(styles)(PostBlog));

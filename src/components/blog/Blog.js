@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import BlogDialog from './BlogDialog';
 import MyButton from '../../util/MyButton';
 import { deleteBlog } from '../../redux/actions/data';
+import Like from './Like';
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -17,8 +18,6 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import MuiLink from '@material-ui/core/Link';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import MessageIcon from '@material-ui/icons/Message';
 // MUI Icons
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -56,7 +55,6 @@ const Blog = ({
   blog,
 }) => {
 	dayjs.extend(relativeTime);
-
   const {
     blogId,
     createdAt,
@@ -70,6 +68,16 @@ const Blog = ({
   const handleDeleteClick = () => {
     deleteBlog(blogId);
   };
+
+  const commentCountMarkup = commentCount === 0 ? (
+    null
+  ) : (
+    <span className={classes.span}>
+      {`${commentCount} ${
+        commentCount > 1 ? 'comments' : 'comment'
+      }`}
+    </span>
+  );
 
 	return (
 		<Card className={classes.root}>
@@ -116,12 +124,11 @@ const Blog = ({
       	</Typography>
       </CardContent>
       <CardActions disableSpacing className={classes.cardActions}>
-        <IconButton aria-label="like">
-          <FavoriteBorderIcon color='primary' />
-        </IconButton>
+        <Like blogId={blogId} />
         <IconButton aria-label="comments">
           <MessageIcon color='primary' />
         </IconButton>
+        {commentCountMarkup}
          <BlogDialog blog={blog}/>
       </CardActions>
 		</Card>

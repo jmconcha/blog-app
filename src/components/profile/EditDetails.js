@@ -196,11 +196,11 @@ const EditDetails = ({
 };
 EditDetails.propTypes = {
 	classes: PropTypes.object.isRequired,
-	username: PropTypes.string.isRequired,
 	bio: PropTypes.string,
 	website: PropTypes.string,
 	location: PropTypes.string,
 	editUserDetails: PropTypes.func.isRequired,
+  username: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({

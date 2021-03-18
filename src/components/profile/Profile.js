@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import ImageUpload from './ImageUpload';
 import EditDetails from './EditDetails';
+import ProfileSkeleton from './ProfileSkeleton';
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -25,6 +26,8 @@ const styles = (theme) => ({
 		marginBottom: 6,
 	},
 	paper: {
+		position: 'sticky',
+		top: 100,
 		padding: 20,
 		marginLeft: 20,
 		marginRight: 20,
@@ -69,7 +72,7 @@ const Profile = ({
 	},
 }) => {
 	const profileMarkup = loading ? (
-		<p>loading...</p>
+		<ProfileSkeleton />
 	) : (
 		authenticated ? (
 			<Fragment>

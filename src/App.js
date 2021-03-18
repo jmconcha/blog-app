@@ -9,6 +9,7 @@ import store from './redux/store';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import User from './pages/User';
 import './App.css';
 import themeObj from './util/theme';
 import AuthRoute from './util/AuthRoute';
@@ -45,6 +46,7 @@ const App = () => {
 	  			<Route exact path='/' component={Home} />
 		  		<AuthRoute exact path='/login' component={Login} />
 		  		<AuthRoute exact path='/signup' component={Signup} />
+		  		<Route exact path='/users/:username' component={User} />
 	  		</Switch>
 	  		</Router>
   		</Provider>

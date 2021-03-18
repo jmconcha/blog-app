@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 		top: '80%',
 		left: '60%',
 		transform: 'scale(0.8)',
-	}
+	},
 });
 
 const ImageUpload = ({ uploadImage, username }) => {

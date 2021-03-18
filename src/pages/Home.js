@@ -10,7 +10,7 @@ const useStyles = makeStyles({
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center',
-	}
+	},
 });
 
 const Home = () => {

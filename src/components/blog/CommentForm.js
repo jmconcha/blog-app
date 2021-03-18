@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { commentOnBlog } from '../../redux/actions/data';
+import { clearErrors } from '../../redux/actions/ui';
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -20,10 +21,17 @@ const styles = (theme) => ({
 const Comment = ({
 	classes,
 	commentOnBlog,
+	clearErrors,
 	loading,
 	errors,
 	blogId,
 }) => {
+	useEffect(() => {
+		return () => {
+			clearErrors();
+		};
+	}, []);
+
 	const [comment, setComment] = useState('');
 
 	const handleChange = (e) => {
@@ -71,6 +79,7 @@ const Comment = ({
 Comment.propTypes = {
 	classes: PropTypes.object.isRequired,
 	commentOnBlog: PropTypes.func.isRequired,
+	clearErrors: PropTypes.func.isRequired,
 	loading: PropTypes.bool.isRequired,
 	errors: PropTypes.object.isRequired,
 	blogId: PropTypes.string.isRequired,
@@ -88,6 +97,7 @@ const mergeProps = (stateProps, actionProps) => ({
 	blogId: stateProps.blogId,
 	loading: stateProps.loading,
 	errors: stateProps.errors,
+	clearErrors: actionProps.clearErrors,
 	commentOnBlog: (comment, blogId) => {
 		actionProps.commentOnBlog(
 			comment,
@@ -100,6 +110,6 @@ const mergeProps = (stateProps, actionProps) => ({
 
 export default connect(
 	mapStateToProps,
-	{ commentOnBlog },
+	{ clearErrors, commentOnBlog },
 	mergeProps
 )(withStyles(styles)(Comment));

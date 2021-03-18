@@ -7,13 +7,16 @@ import {
 	REMOVE_BLOG,
 	SET_COMMENTS,
 	ADD_COMMENT,
+	EMPTY_COMMENTS,
+	INCREMENT_LIKE,
+	DECREMENT_LIKE,
 } from '../types';
 
 const data = (
 	state = {
 		loading: false,
 		blogs: [],
-		comments: [],
+		comments: null,
 	},
 	action
 ) => {
@@ -66,6 +69,11 @@ const data = (
 				...state,
 				comments: action.payload,
 			};
+		case EMPTY_COMMENTS:
+			return {
+				...state,
+				comments: null,
+			};
 		case ADD_COMMENT: 
 			return {
 				...state,
@@ -73,6 +81,23 @@ const data = (
 					...state.comments,
 					action.payload,
 				],
+			};
+		case INCREMENT_LIKE:
+		case DECREMENT_LIKE:
+			return {
+				...state,
+				blogs: state.blogs.map((blog) => {
+					if (blog.blogId === action.payload) {
+						const likeCount = action.type === 'INCREMENT_LIKE' ?
+							(blog.likeCount + 1) :
+							(blog.likeCount - 1);
+						return {
+							...blog,
+							likeCount,
+						};
+					}
+					return blog;
+				}),
 			};
 		default:
 			return state;

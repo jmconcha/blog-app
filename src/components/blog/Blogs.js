@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getBlogs } from '../../redux/actions/data';
 import Blog from './Blog';
+import BlogSkeleton from './BlogSkeleton';
 
 const Blogs = ({
 	loading,
@@ -14,7 +15,7 @@ const Blogs = ({
 	}, []);
 
 	const blogsMarkup = loading ? (
-		<p>loading...</p>
+		<BlogSkeleton />
 	) : (
 		blogs.map((blog) => (
 			<Blog key={blog.blogId} blog={blog} />

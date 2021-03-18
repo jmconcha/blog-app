@@ -1,4 +1,4 @@
-import { db } from '../../util/firebase';
+import firebase, { db } from '../../util/firebase';
 import {
 	LOADING_DATA,
 	DONE_LOADING_DATA,
@@ -8,6 +8,10 @@ import {
 	SET_LIKES,
 	SET_COMMENTS,
 	ADD_COMMENT,
+	EMPTY_COMMENTS,
+	INCREMENT_LIKE,
+	DECREMENT_LIKE,
+	ADD_USER_LIKE,
 } from '../types';
 import {
 	setErrors,
@@ -15,6 +19,10 @@ import {
 	loadingUI,
 	doneLoadingUI
 } from './ui';
+import {
+	addUserLike,
+	removeUserLike,
+} from './user';
 
 export const getBlogs = () => (dispatch) => {
 	dispatch({
@@ -22,6 +30,7 @@ export const getBlogs = () => (dispatch) => {
 	});
 	db
 		.collection('blogs')
+		.orderBy('createdAt', 'desc')
 		.get()
 		.then((blogsSnaphot) => {
 			const blogsData = [];
@@ -61,7 +70,6 @@ export const postBlog =(body, username, imageUrl, successCallback) => (dispatch)
 			.collection('blogs')
 			.add(newBlogData)
 			.then((blogSnaphot) => {
-				dispatch(clearErrors());
 				successCallback();
 				dispatch(doneLoadingUI());
 				dispatch({
@@ -94,12 +102,6 @@ export const deleteBlog = (blogId) => (dispatch) => {
 };
 
 export const getComments = (blogId) => (dispatch) => {
-	console.log(blogId);
-	if (!blogId) {
-		console.log('no blogId');
-		return;
-	};
-	dispatch(loadingUI());
 	// fetch blog comments
 	db
 		.collection('comments')
@@ -120,7 +122,6 @@ export const getComments = (blogId) => (dispatch) => {
 				type: SET_COMMENTS,
 				payload: commentsData,
 			});
-			dispatch(doneLoadingUI());
 		})
 		.catch((err) => {
 			console.error(err);
@@ -164,4 +165,126 @@ export const commentOnBlog = (
 				console.error(err);
 			});
 	}
+};
+
+export const emptyComments = () => (dispatch) => {
+	dispatch({
+		type: EMPTY_COMMENTS,
+	});
+};
+
+export const incrementLike = (blogId) => (dispatch) => {
+	dispatch({
+		type: INCREMENT_LIKE,
+		payload: blogId,
+	});
+};
+
+export const decrementLike = (blogId) => (dispatch) => {
+	dispatch({
+		type: DECREMENT_LIKE,
+		payload: blogId,
+	});
+};
+
+export const likeBlog = (blogId, sender, recipient) => (dispatch) => {
+	const newLikeData = {
+		blogId,
+		username: sender,
+		createdAt: new Date().toISOString(),
+	};
+
+	// like blog
+	db
+		.collection('likes')
+		.add(newLikeData)
+		.then((likeSnapshot) => {
+			newLikeData.likeId = likeSnapshot.id;
+			dispatch(
+				addUserLike(newLikeData)
+			);
+
+			dispatch(incrementBlogLikeCount(blogId));
+
+			// add notification
+			if (sender !== recipient) {
+				const newNotificationData = {
+					sender,
+					recipient,
+					blogId,
+					type: 'like',
+					read: 'false',
+					createdAt: new Date().toISOString(),
+				};
+
+				db
+					.collection('notifications')
+					.doc(newLikeData.likeId)
+					.set(newNotificationData)
+					.catch((err) => {
+						console.error(err);
+					});
+			}
+		})
+		.catch((err) => {
+			console.error(err);
+		});
+};
+
+export const incrementBlogLikeCount = (blogId) => (dispatch) => {
+	db
+		.doc(`/blogs/${blogId}`)
+		.update({
+			likeCount: firebase.firestore.FieldValue.increment(1),
+		})
+		.then(() => {
+			dispatch({
+				type: INCREMENT_LIKE,
+				payload: blogId,
+			})
+		})
+		.catch((err) => {
+			console.error(err);
+		});
+};
+
+// unlikes a blog
+export const unlikeBlog = (blogId, likeId) => (dispatch) => {
+	db
+		.doc(`/likes/${likeId}`)
+		.delete()
+		.then(() => {
+			dispatch(
+				removeUserLike(likeId)
+			);
+
+			dispatch(
+				decrementBlogLikeCount(blogId)
+			);
+
+			// remove notification
+			db
+				.doc(`/notifications/${likeId}`)
+				.delete();
+		})
+		.catch((err) => {
+			console.error(err);
+		});
+};
+
+export const decrementBlogLikeCount = (blogId) => (dispatch) => {
+	db
+		.doc(`/blogs/${blogId}`)
+		.update({
+			likeCount: firebase.firestore.FieldValue.increment(-1),
+		})
+		.then(() => {
+			dispatch({
+				type: DECREMENT_LIKE,
+				payload: blogId,
+			});
+		})
+		.catch((err) => {
+			console.error(err);
+		});
 };

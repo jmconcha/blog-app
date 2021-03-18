@@ -8,6 +8,9 @@ import {
 	SET_USER_LIKES,
 	SET_USER_IMAGE_URL,
 	SET_USER_DETAILS,
+	ADD_USER_LIKE,
+	ADD_USER_NOTIFICATION,
+	REMOVE_USER_LIKE,
 } from '../types';
 
 const user = (
@@ -75,6 +78,29 @@ const user = (
 					...state.credentials,
 					...action.payload,
 				}
+			};
+		case ADD_USER_LIKE: 
+			return {
+				...state,
+				likes: [
+					...state.likes,
+					action.payload,
+				],
+			};
+		case ADD_USER_NOTIFICATION: 
+			return {
+				...state,
+				notifications: [
+					action.payload,
+					...state.notifications,
+				],
+			};
+		case REMOVE_USER_LIKE:
+			return {
+				...state,
+				likes: state.likes.filter(
+					(like) => like.likeId !== action.payload
+				),
 			};
 		default:
 			return state;
