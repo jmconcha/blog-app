@@ -3,13 +3,12 @@ import {
 	DONE_LOADING_USER,
 	USER_AUTHENTICATED,
 	USER_NOT_AUTHENTICATED,
-	SET_USER_CREDENTIALS,
-	SET_USER_NOTIFICATIONS,
 	SET_USER_LIKES,
 	SET_USER_IMAGE_URL,
 	SET_USER_DETAILS,
 	ADD_USER_LIKE,
-	ADD_USER_NOTIFICATION,
+	SET_USER_CREDENTIALS,
+	SET_USER_NOTIFICATIONS,
 	REMOVE_USER_LIKE,
 	MARK_NOTIFICATIONS_READ,
 } from '../types';
@@ -54,11 +53,6 @@ const user = (
 				...state,
 				credentials: action.payload,
 			};
-		case SET_USER_NOTIFICATIONS:
-			return {
-				...state,
-				notifications: action.payload,
-			};
 		case SET_USER_LIKES:
 			return {
 				...state,
@@ -88,13 +82,10 @@ const user = (
 					action.payload,
 				],
 			};
-		case ADD_USER_NOTIFICATION: 
+		case SET_USER_NOTIFICATIONS: 
 			return {
 				...state,
-				notifications: [
-					action.payload,
-					...state.notifications,
-				],
+				notifications: action.payload,
 			};
 		case REMOVE_USER_LIKE:
 			return {
@@ -102,11 +93,6 @@ const user = (
 				likes: state.likes.filter(
 					(like) => like.likeId !== action.payload
 				),
-			};
-		case SET_USER_NOTIFICATIONS:
-			return {
-				...state,
-				notifications: action.payload,
 			};
 		case MARK_NOTIFICATIONS_READ:
 			return {

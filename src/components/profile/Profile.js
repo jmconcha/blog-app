@@ -8,8 +8,8 @@ import EditDetails from './EditDetails';
 import ProfileSkeleton from './ProfileSkeleton';
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import MuiLink from '@material-ui/core/Link';
 import Avatar from '@material-ui/core/Avatar';

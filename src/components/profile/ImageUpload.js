@@ -16,7 +16,7 @@ const useStyles = makeStyles({
 	},
 });
 
-const ImageUpload = ({ uploadImage, username }) => {
+const ImageUpload = ({ uploadImage }) => {
 	const classes = useStyles();
 	const input = useRef();
 
@@ -25,7 +25,7 @@ const ImageUpload = ({ uploadImage, username }) => {
 	};
 
 	const handleChange = (event) => {
-		uploadImage(event.target.files[0], username);
+		uploadImage(event.target.files[0]);
 	};
 
 	return (
@@ -48,14 +48,25 @@ const ImageUpload = ({ uploadImage, username }) => {
 };
 ImageUpload.propTypes = {
 	uploadImage: PropTypes.func.isRequired,
-	username: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({
 	username: state.user.credentials.username,
+	imageUrl: state.user.credentials.imageUrl,
+});
+
+const mergeProps = (stateProps, actionProps) => ({
+	uploadImage: (file) => {
+		actionProps.uploadImage(
+			file,
+			stateProps.username,
+			stateProps.imageUrl
+		);
+	},
 });
 
 export default connect(
 	mapStateToProps,
-	{ uploadImage }
+	{ uploadImage },
+	mergeProps
 )(ImageUpload);

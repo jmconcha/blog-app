@@ -9,19 +9,14 @@ import Like from './Like';
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
 import MuiLink from '@material-ui/core/Link';
-import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 // MUI Icons
-import AddIcon from '@material-ui/icons/Add';
 import ClearIcon from '@material-ui/icons/Clear';
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import MessageIcon from '@material-ui/icons/Message';
 
 const styles = (theme) => ({

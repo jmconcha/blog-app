@@ -9,7 +9,6 @@ import { markNotificationsRead } from '../../redux/actions/user';
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
 import MuiLink from '@material-ui/core/Link';
 import Badge from '@material-ui/core/Badge';
 import Menu from '@material-ui/core/Menu';

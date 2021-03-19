@@ -5,7 +5,6 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import BlogDialog from './BlogDialog';
-import MyButton from '../../util/MyButton';
 import DeleteDialog from './DeleteDialog';
 import Like from './Like';
 // MUI Components
@@ -15,12 +14,9 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import MuiLink from '@material-ui/core/Link';
 import MessageIcon from '@material-ui/icons/Message';
-// MUI Icons
-import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = (theme) => ({
   ...theme.myCSS,
@@ -50,7 +46,6 @@ const Blog = ({
     createdAt,
     imageUrl,
     username,
-    likeCount,
     commentCount,
     body,
   } = blog;

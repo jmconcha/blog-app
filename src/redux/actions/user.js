@@ -136,8 +136,8 @@ const getUserLikes = (username) => (dispatch) => {
 const getUserNotifications = (recipient) => (dispatch) => {
 	db
 		.collection('notifications')
-		.orderBy('createdAt', 'desc')
 		.where('recipient', '==', recipient)
+		.orderBy('createdAt', 'desc')
 		.get()
 		.then((notificationsSnapshot) => {
 			const userNotifications = [];
@@ -270,7 +270,7 @@ export const logoutUser = () => (dispatch) => {
 		});
 };
 
-export const uploadImage = (imageFile, userId) => (dispatch) => {
+export const uploadImage = (imageFile, userId, oldImageUrl) => (dispatch) => {
 	if (imageFile.type !== 'image/png' && imageFile.type !== 'image/jpeg') {
 		return;
 	}
@@ -281,8 +281,8 @@ export const uploadImage = (imageFile, userId) => (dispatch) => {
   const imageExt = imageFile.name.split('.').pop();
   const filename = `${uuidv4()}.${imageExt}`;
 
-	const ref = storageRef.child(`images/${filename}`);
-	ref
+	storageRef
+		.child(`images/${filename}`)
 		.put(imageFile, metadata)
 		.then(() => {
 			const batch = db.batch();
@@ -291,6 +291,20 @@ export const uploadImage = (imageFile, userId) => (dispatch) => {
 				type: SET_USER_IMAGE_URL,
 				payload: imageUrl,
 			});
+
+			// delete old image on storage bucket
+			// checks if old image is not a default image
+			if (!oldImageUrl.match('default.png')) {
+				const filename = oldImageUrl.split('images%2F')[1].split('?alt=media')[0];
+				storageRef
+					.child(`images/${filename}`)
+					.delete()
+					.catch((err) => {
+						console.error(err);
+					});
+			}
+
+
 			// update user imageUrl
 			db
 				.doc(`/users/${userId}`)  
@@ -298,6 +312,7 @@ export const uploadImage = (imageFile, userId) => (dispatch) => {
 				.catch((err) => {
 					console.error(err);
 				});
+
 			// update user blog posts imageUrl
 			db
 				.collection('blogs')

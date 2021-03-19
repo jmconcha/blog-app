@@ -34,11 +34,7 @@ const Comments = ({
 	const commentsMarkup = comments === null ? (
 		<CommentSkeleton />
 	) : (
-		comments.length === 0 ? (
-			<Typography variant="h5" className={classes.noComment}>
-				No  comments yet
-			</Typography>
-		) : (
+		comments.length > 0 ? (
 			comments.map((comment, index) => (
 				<Fragment  key={comment.commentId}>
 					<Comment comment={comment} />
@@ -47,7 +43,7 @@ const Comments = ({
 					) : (null)}
 				</Fragment>
 			))
-		)
+		) : (null)
 	);
 
 	return (

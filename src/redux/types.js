@@ -10,7 +10,6 @@ export const SET_USER_IMAGE_URL = 'SET_USER_IMAGE_URL';
 export const SET_USER_DETAILS = 'SET_USER_DETAILS';
 export const ADD_USER_LIKE = 'ADD_USER_LIKE';
 export const REMOVE_USER_LIKE = 'REMOVE_USER_LIKE';
-export const ADD_USER_NOTIFICATION = 'ADD_USER_NOTIFICATION';
 export const MARK_NOTIFICATIONS_READ = 'MARK_NOTIFICATIONS_READ';
 // ui types
 export const LOADING_UI = 'LOADING_UI';
@@ -30,5 +29,3 @@ export const EMPTY_COMMENTS = 'EMPTY_COMMENTS';
 export const INCREMENT_LIKE = 'INCREMENT_LIKE';
 export const DECREMENT_LIKE = 'DECREMENT_LIKE';
 export const INCREMENT_COMMENT_COUNT = 'INCREMENT_COMMENT_COUNT';
-// types format
-export const type = 'type';

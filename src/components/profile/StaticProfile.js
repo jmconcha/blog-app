@@ -1,6 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import ProfileSkeleton from './ProfileSkeleton';
 import { db } from '../../util/firebase';
@@ -8,7 +7,6 @@ import { db } from '../../util/firebase';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import MuiLink from '@material-ui/core/Link';
 import Avatar from '@material-ui/core/Avatar';
 // MUI Icons
 import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
