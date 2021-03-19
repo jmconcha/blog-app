@@ -36,7 +36,6 @@ const Comment = ({
 	},
 }) => (
 	<Fragment>
-		<hr className={classes.visibleSeparator} />
 		<Grid container className={classes.commentContainer}>
 			<Grid container>
 				<Grid item className={classes.commentHeader}>

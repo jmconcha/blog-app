@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 // MUI Components
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -47,19 +48,21 @@ const useStyles = makeStyles({
   },
 });
 
-const ProfileSkeleton = () => {
+const ProfileSkeleton = ({ isStatic }) => {
   const classes = useStyles();
 
   return (
     <Fragment>
       <div className={classes.imageContainer}>
         <Skeleton variant="circle" width={150} height={150} />
-        <Skeleton
-          variant="circle"
-          width={20}
-          height={20}
-          className={classes.imageUploadPlaceholder}
-        />
+        {!isStatic && (
+          <Skeleton
+            variant="circle"
+            width={20}
+            height={20}
+            className={classes.imageUploadPlaceholder}
+          />
+        )}
       </div>
       <div className={classes.profileDetails}>
         <Skeleton width={60} height={24} />
@@ -83,17 +86,22 @@ const ProfileSkeleton = () => {
           <span>Joined date</span>
         </div>
         <hr />
-        <div className={classes.editButtonContainer}>
-          <Skeleton
-          variant="circle"
-          width={28}
-          height={28}
-          className={classes.editDetailsPlaceholder}
-        />
-        </div>
+        {!isStatic && (
+          <div className={classes.editButtonContainer}>
+            <Skeleton
+              variant="circle"
+              width={28}
+              height={28}
+              className={classes.editDetailsPlaceholder}
+            />
+          </div>
+        )}
       </div>
     </Fragment>
   );
+};
+ProfileSkeleton.propTypes = {
+  isStatic: PropTypes.bool,
 };
 
 export default ProfileSkeleton;

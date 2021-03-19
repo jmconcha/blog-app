@@ -80,7 +80,7 @@ const Like = ({
 	);
 };
 Like.propTypes = {
-	authenticatedUser: PropTypes.string.isRequired,
+	authenticatedUser: PropTypes.string,
 	likes: PropTypes.array.isRequired,
 	blog: PropTypes.object.isRequired,
   likeBlog: PropTypes.func.isRequired,

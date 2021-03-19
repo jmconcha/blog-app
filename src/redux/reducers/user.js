@@ -102,6 +102,11 @@ const user = (
 					(like) => like.likeId !== action.payload
 				),
 			};
+		case SET_USER_NOTIFICATIONS:
+			return {
+				...state,
+				notifications: action.payload,
+			};
 		default:
 			return state;
 	}

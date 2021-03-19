@@ -87,6 +87,7 @@ const Profile = ({
 	      		component={Link}
 	      		to={`/users/${username}`}
 	      		variant='h5'
+          	underline="none"
 	      	>
 		      	{username}
 		      </MuiLink>

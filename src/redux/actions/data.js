@@ -12,6 +12,7 @@ import {
 	INCREMENT_LIKE,
 	DECREMENT_LIKE,
 	ADD_USER_LIKE,
+	INCREMENT_COMMENT_COUNT,
 } from '../types';
 import {
 	setErrors,
@@ -24,13 +25,23 @@ import {
 	removeUserLike,
 } from './user';
 
-export const getBlogs = () => (dispatch) => {
+export const getBlogs = (userId) => (dispatch) => {
 	dispatch({
 		type: LOADING_DATA,
 	});
-	db
+
+	const query = userId ? (
+		db
 		.collection('blogs')
 		.orderBy('createdAt', 'desc')
+		.where('username', '==', userId)
+	) : (
+		db
+		.collection('blogs')
+		.orderBy('createdAt', 'desc')
+	);
+
+	query
 		.get()
 		.then((blogsSnaphot) => {
 			const blogsData = [];
@@ -131,7 +142,8 @@ export const getComments = (blogId) => (dispatch) => {
 export const commentOnBlog = (
 	comment,
 	blogId,
-	username,
+	recipient,
+	sender,
 	imageUrl
 ) => (dispatch) => {
 	dispatch(loadingUI());
@@ -143,9 +155,9 @@ export const commentOnBlog = (
 	} else {
 		const newCommentData = {
 			comment,
-			username,
 			imageUrl,
 			blogId,
+			username: sender,
 			createdAt: new Date().toISOString(),
 		};
 
@@ -160,6 +172,24 @@ export const commentOnBlog = (
 					type: ADD_COMMENT,
 					payload: newCommentData,
 				});
+
+				// increment commentCount
+				dispatch(
+					incrementCommentCount(blogId)
+				);
+
+				// created notification
+				if (sender !== recipient) {
+					const newNotificationData = {
+						blogId,
+						sender,
+						recipient,
+						type: 'comment',
+						read: false,
+						createdAt: new Date().toISOString(),
+					};
+					createNotification(newNotificationData, newCommentData.commentId);
+				}
 			})
 			.catch((err) => {
 				console.error(err);
@@ -173,18 +203,21 @@ export const emptyComments = () => (dispatch) => {
 	});
 };
 
-export const incrementLike = (blogId) => (dispatch) => {
-	dispatch({
-		type: INCREMENT_LIKE,
-		payload: blogId,
-	});
-};
-
-export const decrementLike = (blogId) => (dispatch) => {
-	dispatch({
-		type: DECREMENT_LIKE,
-		payload: blogId,
-	});
+export const incrementCommentCount = (blogId) => (dispatch) => {
+	db
+		.doc(`/blogs/${blogId}`)
+		.update({
+			commentCount: firebase.firestore.FieldValue.increment(1),
+		})
+		.then(() => {
+			dispatch({
+				type: INCREMENT_COMMENT_COUNT,
+				payload: blogId,
+			});
+		})
+		.catch((err) => {
+			console.error(err);
+		});
 };
 
 export const likeBlog = (blogId, sender, recipient) => (dispatch) => {
@@ -213,19 +246,23 @@ export const likeBlog = (blogId, sender, recipient) => (dispatch) => {
 					recipient,
 					blogId,
 					type: 'like',
-					read: 'false',
+					read: false,
 					createdAt: new Date().toISOString(),
 				};
 
-				db
-					.collection('notifications')
-					.doc(newLikeData.likeId)
-					.set(newNotificationData)
-					.catch((err) => {
-						console.error(err);
-					});
+				createNotification(newNotificationData, newLikeData.likeId);
 			}
 		})
+		.catch((err) => {
+			console.error(err);
+		});
+};
+
+const createNotification = (notificationData, notificationId) => {
+	db
+		.collection('notifications')
+		.doc(notificationId)
+		.set(notificationData)
 		.catch((err) => {
 			console.error(err);
 		});

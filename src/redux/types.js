@@ -28,5 +28,6 @@ export const ADD_COMMENT = 'ADD_COMMENT';
 export const EMPTY_COMMENTS = 'EMPTY_COMMENTS';
 export const INCREMENT_LIKE = 'INCREMENT_LIKE';
 export const DECREMENT_LIKE = 'DECREMENT_LIKE';
+export const INCREMENT_COMMENT_COUNT = 'INCREMENT_COMMENT_COUNT';
 // types format
 export const type = 'type';

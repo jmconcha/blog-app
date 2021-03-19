@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -53,6 +53,7 @@ const styles = (theme) => ({
 
 const BlogDialog = ({
 	classes,
+	dialogOpen,
 	blog: {
 		blogId,
     createdAt,
@@ -63,15 +64,45 @@ const BlogDialog = ({
     body,
 	},
 }) => {
-	const [open, setOpen] = useState(false);
+	const [open, setOpen] = useState(dialogOpen);
+	const [oldPath, setOldPath] = useState('');
+
+	useEffect(() => {
+		if (open) {
+			setPathname();
+		}
+	}, []);
+
+	const setPathname = () => {
+		const newPath = `/users/${username}/blogs/${blogId}`;
+		const oldPath = window.location.pathname === newPath ?
+			`/users/${username}` :
+			window.location.pathname;
+
+		setOldPath(oldPath);
+		window.history.pushState(null, null, newPath);
+	};
 
 	const handleOpen = () => {
+		setPathname();
+
 		setOpen(true);
 	};
 
 	const handleClose = () => {
 		setOpen(false);
+		window.history.pushState(null, null, oldPath);
 	};
+
+	const commentCountMarkup = commentCount === 0 ? (
+    null
+  ) : (
+    <span className={classes.span}>
+      {`${commentCount} ${
+        commentCount > 1 ? 'comments' : 'comment'
+      }`}
+    </span>
+  );
 
 	return (
 		<Fragment>
@@ -125,8 +156,9 @@ const BlogDialog = ({
 			        <IconButton aria-label="comments">
 			          <MessageIcon color='primary' />
 			        </IconButton>
+			        {commentCountMarkup}
 			        <hr className={classes.visibleSeparator} />
-			        <CommentForm blogId={blogId} />
+			        <CommentForm blogId={blogId} blogUsername={username} />
 			        <Comments blogId={blogId} />
 			        <hr className={classes.invisibleSeparator} />
 						</Grid>
@@ -138,6 +170,7 @@ const BlogDialog = ({
 };
 BlogDialog.propTypes = {
 	classes: PropTypes.object.isRequired,
+	dialogOpen: PropTypes.bool.isRequired,
 	blog: PropTypes.object,
 };
 

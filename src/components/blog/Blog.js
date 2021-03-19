@@ -53,6 +53,7 @@ const Blog = ({
   deleteBlog,
   authenticatedUser,
   blog,
+  dialogOpen,
 }) => {
 	dayjs.extend(relativeTime);
   const {
@@ -93,6 +94,7 @@ const Blog = ({
               component={Link}
               to={`/users/${username}`}
               variant='h6'
+              underline="none"
               className={classes.appIconColor}
             >
               {username}
@@ -129,7 +131,7 @@ const Blog = ({
           <MessageIcon color='primary' />
         </IconButton>
         {commentCountMarkup}
-         <BlogDialog blog={blog}/>
+         <BlogDialog blog={blog} dialogOpen={dialogOpen} />
       </CardActions>
 		</Card>
 	);
@@ -139,10 +141,12 @@ Blog.propTypes = {
 	blog: PropTypes.object.isRequired,
   deleteBlog: PropTypes.func.isRequired,
   authenticatedUser: PropTypes.string,
+  dialogOpen: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
   authenticatedUser: state.user.credentials.username,
+  ...ownProps,
 });
 
 export default connect(

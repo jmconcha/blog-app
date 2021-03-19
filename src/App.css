@@ -8,3 +8,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: rgba(0,0,0,0.1);
 }
+
+header svg {
+	color: #FFFFFF;
+}

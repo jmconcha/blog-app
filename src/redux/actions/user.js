@@ -95,6 +95,9 @@ export const getUserData = (userId) => (dispatch) => {
 				type: DONE_LOADING_USER,
 			});
 			dispatch(
+				getUserLikes(userData.username)
+			);
+			dispatch(
 				getUserNotifications(userData.username)
 			);
 		})
@@ -106,7 +109,7 @@ export const getUserData = (userId) => (dispatch) => {
 		});
 };
 
-const getUserNotifications = (username) => (dispatch) => {
+const getUserLikes = (username) => (dispatch) => {
 	db
 		.collection('likes')
 		.where('username', '==', username)
@@ -123,6 +126,30 @@ const getUserNotifications = (username) => (dispatch) => {
 				type: SET_USER_LIKES,
 				payload: likesData,
 			})
+		})
+		.catch((err) => {
+			console.error(err);
+		});
+};
+
+const getUserNotifications = (recipient) => (dispatch) => {
+	db
+		.collection('notifications')
+		.orderBy('createdAt', 'desc')
+		.where('recipient', '==', recipient)
+		.get()
+		.then((notificationsSnapshot) => {
+			const userNotifications = [];
+			notificationsSnapshot.forEach((notif) => {
+				userNotifications.push({
+					notificationId: notif.id,
+					...notif.data(),
+				});
+			});
+			dispatch({
+				type: SET_USER_NOTIFICATIONS,
+				payload: userNotifications,
+			});
 		})
 		.catch((err) => {
 			console.error(err);

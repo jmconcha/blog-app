@@ -20,11 +20,11 @@ const styles = (theme) => ({
 
 const Comment = ({
 	classes,
+	authenticated,
 	commentOnBlog,
 	clearErrors,
 	loading,
 	errors,
-	blogId,
 }) => {
 	useEffect(() => {
 		return () => {
@@ -40,69 +40,78 @@ const Comment = ({
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		commentOnBlog(comment, blogId);
+		commentOnBlog(comment);
 		setComment('');
 	};
 
 	return (
-		<Grid item sm>
-			<form onSubmit={handleSubmit}>
-      	<TextField
-          name="comment"
-          type="text"
-          label="Comment"
-          multiline
-          rows="2"
-          error={Boolean(errors.comment)}
-          helperText={errors.comment}
-          value={comment}
-          onChange={handleChange}
-          fullWidth
-          className={classes.textField}
-        />
-        <Button
-        	type="submit"
-        	variant="contained"
-        	color="primary"
-        	disabled={loading}
-        	className={classes.submitButton}
-        >
-        	Submit
-        	{loading && (
-						<CircularProgress size={30} className={classes.progress} />
-					)}
-        </Button>
-      </form>
-		</Grid>
+		authenticated ? (
+			<Fragment>
+				<Grid item sm>
+					<form onSubmit={handleSubmit}>
+		      	<TextField
+		          name="comment"
+		          type="text"
+		          label="Comment"
+		          multiline
+		          rows="2"
+		          error={Boolean(errors.comment)}
+		          helperText={errors.comment}
+		          value={comment}
+		          onChange={handleChange}
+		          fullWidth
+		          className={classes.textField}
+		        />
+		        <Button
+		        	type="submit"
+		        	variant="contained"
+		        	color="primary"
+		        	disabled={loading}
+		        	className={classes.submitButton}
+		        >
+		        	Submit
+		        	{loading && (
+								<CircularProgress size={30} className={classes.progress} />
+							)}
+		        </Button>
+		      </form>
+				</Grid>
+				<hr className={classes.visibleSeparator} />
+			</Fragment>
+		) : (null)
 	);
 };
 Comment.propTypes = {
 	classes: PropTypes.object.isRequired,
+	authenticated: PropTypes.bool.isRequired,
 	commentOnBlog: PropTypes.func.isRequired,
 	clearErrors: PropTypes.func.isRequired,
 	loading: PropTypes.bool.isRequired,
 	errors: PropTypes.object.isRequired,
-	blogId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
 	blogId: ownProps.blogId,
+	blogUsername: ownProps.blogUsername,
+	authenticated: state.user.authenticated,
 	loading: state.ui.loading,
 	errors: state.ui.errors,
-	username: state.user.credentials.username,
+	authenticatedUser: state.user.credentials.username,
 	imageUrl: state.user.credentials.imageUrl,
 });
 
 const mergeProps = (stateProps, actionProps) => ({
+	authenticated: stateProps.authenticated,
 	blogId: stateProps.blogId,
 	loading: stateProps.loading,
 	errors: stateProps.errors,
 	clearErrors: actionProps.clearErrors,
-	commentOnBlog: (comment, blogId) => {
+	commentOnBlog: (comment) => {
 		actionProps.commentOnBlog(
 			comment,
-			blogId,
-			stateProps.username,
+			stateProps.blogId,
+			stateProps.blogUsername,
+			stateProps.authenticatedUser,
 			stateProps.imageUrl,
 		);
 	},

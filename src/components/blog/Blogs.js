@@ -9,16 +9,22 @@ const Blogs = ({
 	loading,
 	blogs,
 	getBlogs,
+	userId,
+	blogId,
 }) => {
 	useEffect(() => {
-		getBlogs();
+		getBlogs(userId);
 	}, []);
 
 	const blogsMarkup = loading ? (
 		<BlogSkeleton />
 	) : (
 		blogs.map((blog) => (
-			<Blog key={blog.blogId} blog={blog} />
+			<Blog
+				key={blog.blogId}
+				blog={blog}
+				dialogOpen={blog.blogId === blogId}
+			/>
 		))
 	);
 
@@ -30,11 +36,14 @@ Blogs.propTypes = {
 	loading: PropTypes.bool.isRequired,
 	blogs: PropTypes.array.isRequired,
 	getBlogs: PropTypes.func.isRequired,
+	userId: PropTypes.string,
+	blogId: PropTypes.string,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
 	loading: state.data.loading,
 	blogs: state.data.blogs,
+	...ownProps,
 });
 
 export default connect(

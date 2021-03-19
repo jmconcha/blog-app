@@ -1,11 +1,12 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 import AppIcon from '../../images/blog.png';
 import MyButton from '../../util/MyButton';
 import { logoutUser } from '../../redux/actions/user';
 import PostBlog from '../blog/PostBlog';
+import Notifications from './Notifications';
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -13,7 +14,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 // MUI Icons
 import HomeIcon from '@material-ui/icons/Home';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const styles = (theme) => ({
@@ -34,17 +34,15 @@ const styles = (theme) => ({
 const NavBar = ({ classes, authenticated, logoutUser }) => {
 	const navMarkup = authenticated ? (
 		<Fragment>
-			<PostBlog />
+			<Route exact path='/' component={PostBlog} />
 			<Link to='/'>
 				<MyButton tip='Home'>
-					<HomeIcon className={classes.navIcon}/>
+					<HomeIcon />
 				</MyButton>
 			</Link>
-			<MyButton tip='Notifications'>
-				<NotificationsIcon className={classes.navIcon}/>
-			</MyButton>
+			<Notifications />
 			<MyButton tip='Logout' onClick={logoutUser}>
-				<ExitToAppIcon className={classes.navIcon}/>
+				<ExitToAppIcon />
 			</MyButton>
 		</Fragment>
 	) : (

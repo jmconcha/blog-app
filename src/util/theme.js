@@ -72,9 +72,6 @@ const theme =  {
       objectFit: 'cover',
       borderRadius: '50%',
     },
-    navIcon: {
-      color: '#FFFFFF',
-    },
   },
 };
 

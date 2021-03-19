@@ -10,6 +10,7 @@ import {
 	EMPTY_COMMENTS,
 	INCREMENT_LIKE,
 	DECREMENT_LIKE,
+	INCREMENT_COMMENT_COUNT,
 } from '../types';
 
 const data = (
@@ -78,8 +79,8 @@ const data = (
 			return {
 				...state,
 				comments: [
-					...state.comments,
 					action.payload,
+					...state.comments,
 				],
 			};
 		case INCREMENT_LIKE:
@@ -94,6 +95,19 @@ const data = (
 						return {
 							...blog,
 							likeCount,
+						};
+					}
+					return blog;
+				}),
+			};
+		case INCREMENT_COMMENT_COUNT:
+			return {
+				...state,
+				blogs: state.blogs.map((blog) => {
+					if (blog.blogId === action.payload) {
+						return {
+							...blog,
+							commentCount: blog.commentCount + 1,
 						};
 					}
 					return blog;

@@ -77,10 +77,9 @@ const PostBlog = ({
 		<Fragment>
 			<MyButton
 				tip='Post A Blog'
-				buttonClassName={classes.navIcon}
 				onClick={handleOpen}
 			>
-				<AddIcon className={classes.navIcon}/>
+				<AddIcon />
 			</MyButton>
 		  <Dialog
 	    	open={open}
