@@ -12,6 +12,7 @@ import {
 	SET_USER_DETAILS,
 	ADD_USER_LIKE,
 	REMOVE_USER_LIKE,
+	MARK_NOTIFICATIONS_READ,
 } from '../types';
 import {
 	setErrors,
@@ -367,5 +368,23 @@ export const removeUserLike = (likeId) => (dispatch) => {
 	dispatch({
 		type: REMOVE_USER_LIKE,
 		payload: likeId,
+	});
+};
+
+export const markNotificationsRead = (unreadNotificationIds) => (dispatch) => {
+	const batch = db.batch();
+	unreadNotificationIds.forEach((notifId) => {
+		batch.delete(db.doc(`/notifications/${notifId}`));
+	});
+	batch
+	.commit()
+	.then(() => {
+		dispatch({
+			type: MARK_NOTIFICATIONS_READ,
+			payload: unreadNotificationIds,
+		});
+	})
+	.catch((err) => {
+		console.error(err);
 	});
 };

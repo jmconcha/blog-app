@@ -8,6 +8,7 @@ import EditDetails from './EditDetails';
 import ProfileSkeleton from './ProfileSkeleton';
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import MuiLink from '@material-ui/core/Link';
@@ -55,6 +56,18 @@ const styles = (theme) => ({
 	editButtonContainer: {
 		display: 'flex',
 		justifyContent: 'flex-end',
+	},
+	buttonContainer: {
+		marginTop: 20,
+		display: 'flex',
+		justifyContent: 'space-between',
+	},
+	loginButton: {
+		color: '#FFFFFF',
+		backgroundColor: '#4267B2',
+		'&:hover': {
+			backgroundColor: '#375695',
+		},
 	},
 });
 
@@ -126,7 +139,27 @@ const Profile = ({
 			</Fragment>
 		) : (
 			<Fragment>
-				<div>no profile</div>
+				<Typography variant="h6">
+					Join us today and flex your blog to everyone.
+				</Typography>
+				<div className={classes.buttonContainer}>
+					<Button 
+						component={Link}
+						to="/login"
+						variant="contained"
+						className={classes.loginButton}
+					>
+						Login
+					</Button>
+					<Button 
+						component={Link}
+						to="/signup"
+						variant="contained"
+						color="primary"
+					>
+						Signup
+					</Button>
+				</div>
 			</Fragment>
 		)
 	);

@@ -1,8 +1,10 @@
 import React, { useState, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { markNotificationsRead } from '../../redux/actions/user';
 // MUI Components
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
@@ -35,7 +37,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Notifications = ({ notifications }) => {
+const Notifications = ({ notifications, markNotificationsRead }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const classes = useStyles();
   dayjs.extend(relativeTime);
@@ -55,6 +57,13 @@ const Notifications = ({ notifications }) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+    const unreadNotificationIds = [];
+    notifications.forEach((notif) => {
+      if (!notif.read) {
+        unreadNotificationIds.push(notif.notificationId);
+      }
+    });
+    markNotificationsRead(unreadNotificationIds);
   };
 
   const unreadNotifications = countUnreadNotifications();
@@ -122,7 +131,11 @@ const Notifications = ({ notifications }) => {
       </Menu>
     </Fragment>
   );
-}
+};
+Notifications.propTypes = {
+  notifications: PropTypes.array.isRequired,
+  markNotificationsRead: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state) => ({
   notifications: state.user.notifications,
@@ -130,4 +143,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
+  { markNotificationsRead }
 )(Notifications);

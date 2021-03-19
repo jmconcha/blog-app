@@ -10,6 +10,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import User from './pages/User';
+import PageNotFound from './pages/PageNotFound';
 import './App.css';
 import themeObj from './util/theme';
 import AuthRoute from './util/AuthRoute';
@@ -48,6 +49,7 @@ const App = () => {
 		  		<AuthRoute exact path='/signup' component={Signup} />
 		  		<Route exact path='/users/:userId' component={User} />
 		  		<Route exact path='/users/:userId/blogs/:blogId' component={User} />
+		  		<Route component={PageNotFound} />
 	  		</Switch>
 	  		</Router>
   		</Provider>

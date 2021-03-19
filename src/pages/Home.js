@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Blogs from '../components/blog/Blogs';
 import Profile from '../components/profile/Profile';
 // MUI Components
@@ -14,6 +14,10 @@ const useStyles = makeStyles({
 });
 
 const Home = () => {
+	useEffect(() => {
+		window.document.title = 'Blog - Home';
+	}, []);
+
 	const classes = useStyles();
 
 	return (

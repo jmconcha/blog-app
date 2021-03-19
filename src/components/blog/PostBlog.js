@@ -76,7 +76,7 @@ const PostBlog = ({
 	return (
 		<Fragment>
 			<MyButton
-				tip='Post A Blog'
+				tip='Post Blog'
 				onClick={handleOpen}
 			>
 				<AddIcon />
@@ -92,7 +92,7 @@ const PostBlog = ({
 	      	id="form-dialog-title"
 	      	className={classes.dialogTitle}
 	      >
-	      	Post A Blog
+	      	Post a new blog
           <MyButton
           	tip="Close"
           	buttonClassName={classes.closeButton}
@@ -127,7 +127,7 @@ const PostBlog = ({
 		        	disabled={loading}
 		        	className={classes.submitButton}
 		        >
-		        	Submit
+		        	Post
 		        	{loading && (
 								<CircularProgress size={30} className={classes.progress} />
 							)}

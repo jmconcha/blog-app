@@ -11,6 +11,7 @@ import {
 	ADD_USER_LIKE,
 	ADD_USER_NOTIFICATION,
 	REMOVE_USER_LIKE,
+	MARK_NOTIFICATIONS_READ,
 } from '../types';
 
 const user = (
@@ -106,6 +107,23 @@ const user = (
 			return {
 				...state,
 				notifications: action.payload,
+			};
+		case MARK_NOTIFICATIONS_READ:
+			return {
+				...state,
+				notifications: state.notifications.map((notif) => {
+					const isUnread = action.payload.some(
+						(unreadNotifId) => unreadNotifId === notif.notificationId
+					);
+
+					if (isUnread) {
+						return {
+							...notif,
+							read: true,
+						};
+					}
+					return notif;
+				}),
 			};
 		default:
 			return state;

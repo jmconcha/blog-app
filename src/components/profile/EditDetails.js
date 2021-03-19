@@ -81,116 +81,116 @@ const EditDetails = ({
 
 	return (
 		<Fragment>
-		<MyButton tip='Edit Details' onClick={handleOpen}>
-    	<EditIcon color='primary' />
-    </MyButton>
-    <Dialog
-    	open={open}
-    	onClose={handleClose}
-    	aria-labelledby="form-dialog-title"
-    	maxWidth='sm'
-    	fullWidth
-    >
-      <DialogTitle
-      	id="form-dialog-title"
-      	className={classes.appIconColor}
+  		<MyButton tip='Edit Details' onClick={handleOpen}>
+      	<EditIcon color='primary' />
+      </MyButton>
+      <Dialog
+      	open={open}
+      	onClose={handleClose}
+      	aria-labelledby="form-dialog-title"
+      	maxWidth='sm'
+      	fullWidth
       >
-      	Edit Details
-      </DialogTitle>
-      <DialogContent>
-        <TextField
-          name="bio"
-          type="text"
-          label="Bio"
-          multiline
-          rows="3"
-          placeholder="Tell something about yourself"
-          value={userDetails.bio}
-          onChange={handleChange}
-          fullWidth
-          className={classes.textField}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="clear text field"
-                  onClick={handleClearClick('bio')}
-                  size="small"
-                >
-                  <ClearIcon
-                    color='inherit'
-                    className={classes.clearIcon}
-                    fontSize="small"
-                  />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        <TextField
-          name="website"
-          type="text"
-          label="Website"
-          placeholder="Your personal/professional website"
-          value={userDetails.website}
-          onChange={handleChange}
-          fullWidth
-          className={classes.textField}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="clear text field"
-                  onClick={handleClearClick('website')}
-                  size="small"
-                >
-                  <ClearIcon
-                    color='inherit'
-                    className={classes.clearIcon}
-                    fontSize="small"
-                  />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        <TextField
-          name="location"
-          type="text"
-          label="Location"
-          placeholder="Tell something about yourself"
-          value={userDetails.location}
-          onChange={handleChange}
-          fullWidth
-          className={classes.textField}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="clear text field"
-                  onClick={handleClearClick('location')}
-                  size="small"
-                >
-                  <ClearIcon
-                    color='inherit'
-                    className={classes.clearIcon}
-                    fontSize="small"
-                  />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="secondary">
-          Cancel
-        </Button>
-        <Button onClick={handleSubmit} color="primary">
-          Submit
-        </Button>
-      </DialogActions>
-    </Dialog>
+        <DialogTitle
+        	id="form-dialog-title"
+        	className={classes.appIconColor}
+        >
+        	Edit Details
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+            name="bio"
+            type="text"
+            label="Bio"
+            multiline
+            rows="3"
+            placeholder="Tell something about yourself"
+            value={userDetails.bio}
+            onChange={handleChange}
+            fullWidth
+            className={classes.textField}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="clear text field"
+                    onClick={handleClearClick('bio')}
+                    size="small"
+                  >
+                    <ClearIcon
+                      color='inherit'
+                      className={classes.clearIcon}
+                      fontSize="small"
+                    />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <TextField
+            name="website"
+            type="text"
+            label="Website"
+            placeholder="Your personal/professional website"
+            value={userDetails.website}
+            onChange={handleChange}
+            fullWidth
+            className={classes.textField}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="clear text field"
+                    onClick={handleClearClick('website')}
+                    size="small"
+                  >
+                    <ClearIcon
+                      color='inherit'
+                      className={classes.clearIcon}
+                      fontSize="small"
+                    />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <TextField
+            name="location"
+            type="text"
+            label="Location"
+            placeholder="Tell something about yourself"
+            value={userDetails.location}
+            onChange={handleChange}
+            fullWidth
+            className={classes.textField}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="clear text field"
+                    onClick={handleClearClick('location')}
+                    size="small"
+                  >
+                    <ClearIcon
+                      color='inherit'
+                      className={classes.clearIcon}
+                      fontSize="small"
+                    />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="secondary">
+            Cancel
+          </Button>
+          <Button onClick={handleSubmit} color="primary">
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Fragment>
 	);
 };

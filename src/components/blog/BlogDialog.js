@@ -153,10 +153,8 @@ const BlogDialog = ({
 								{body}
 							</Typography>
 							<Like blogId={blogId} />
-			        <IconButton aria-label="comments">
-			          <MessageIcon color='primary' />
-			        </IconButton>
-			        {commentCountMarkup}
+			        <MessageIcon color='primary' className={classes.messageIcon} />
+			        <span>{commentCountMarkup}</span>
 			        <hr className={classes.visibleSeparator} />
 			        <CommentForm blogId={blogId} blogUsername={username} />
 			        <Comments blogId={blogId} />

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import BlogDialog from './BlogDialog';
 import MyButton from '../../util/MyButton';
-import { deleteBlog } from '../../redux/actions/data';
+import DeleteDialog from './DeleteDialog';
 import Like from './Like';
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
@@ -36,21 +36,10 @@ const styles = (theme) => ({
     padding: 0,
     margin: 0,
   },
-  deleteButton: {
-    position: 'absolute',
-    top: '9%',
-    left: '91%',
-  },
-  deleteIcon: {
-    '&:hover': {
-      color: '#ff3d00',
-    },
-  },
 });
 
 const Blog = ({
   classes,
-  deleteBlog,
   authenticatedUser,
   blog,
   dialogOpen,
@@ -65,10 +54,6 @@ const Blog = ({
     commentCount,
     body,
   } = blog;
-
-  const handleDeleteClick = () => {
-    deleteBlog(blogId);
-  };
 
   const commentCountMarkup = commentCount === 0 ? (
     null
@@ -100,17 +85,7 @@ const Blog = ({
               {username}
             </MuiLink>
             {authenticatedUser === username ? (
-              <MyButton
-                tip="Delete Blog"
-                buttonClassName={classes.deleteButton}
-                onClick={handleDeleteClick}
-              >
-                <DeleteIcon
-                  color="inherit"
-                  className={classes.deleteIcon}
-                  fontSize="small"
-                 />
-              </MyButton>
+              <DeleteDialog blogId={blogId} />
             ) : (null)}
           </Fragment>
         }
@@ -127,10 +102,8 @@ const Blog = ({
       </CardContent>
       <CardActions disableSpacing className={classes.cardActions}>
         <Like blogId={blogId} />
-        <IconButton aria-label="comments">
-          <MessageIcon color='primary' />
-        </IconButton>
-        {commentCountMarkup}
+        <MessageIcon color='primary' className={classes.messageIcon} />
+        <span>{commentCountMarkup}</span>
          <BlogDialog blog={blog} dialogOpen={dialogOpen} />
       </CardActions>
 		</Card>
@@ -139,7 +112,6 @@ const Blog = ({
 Blog.propTypes = {
   classes: PropTypes.object.isRequired,
 	blog: PropTypes.object.isRequired,
-  deleteBlog: PropTypes.func.isRequired,
   authenticatedUser: PropTypes.string,
   dialogOpen: PropTypes.bool.isRequired,
 };
@@ -150,6 +122,5 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 export default connect(
-  mapStateToProps,
-  { deleteBlog }
+  mapStateToProps
 )(withStyles(styles)(Blog));

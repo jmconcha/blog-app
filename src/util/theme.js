@@ -72,6 +72,11 @@ const theme =  {
       objectFit: 'cover',
       borderRadius: '50%',
     },
+    messageIcon: {
+      marginLeft: 15,
+      marginRight: 10,
+      verticalAlign: 'middle',
+    },
   },
 };
 

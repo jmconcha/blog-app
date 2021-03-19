@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -6,17 +7,10 @@ import {
   unlikeBlog,
 } from '../../redux/actions/data';
 // MUI Components
-import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 // MUI Icons
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-
-const useStyles = makeStyles({
-  span: {
-    fontSize: '0.9rem',
-  },
-});
 
 const Like = ({
 	authenticatedUser,
@@ -29,7 +23,7 @@ const Like = ({
 		likeCount,
 	},
 }) => {
-	const classes = useStyles();
+  const history = useHistory();
 
   const isLiked = () => {
     return likes.some((like) => like.blogId === blogId);
@@ -43,6 +37,8 @@ const Like = ({
   const handleLikeClick = () => {
     if (authenticatedUser) {
       likeBlog(blogId, authenticatedUser, username); 
+    } else {
+      history.push('/login');
     }
   };
 
@@ -65,7 +61,7 @@ const Like = ({
   const likeCountMarkup = likeCount === 0 ? (
     null
   ) : (
-    <span className={classes.span}>
+    <span>
       {`${likeCount} ${
         likeCount > 1 ? 'likes' : 'like'
       }`}

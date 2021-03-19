@@ -3,12 +3,18 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getComments, emptyComments } from '../../redux/actions/data';
 import Comment from './Comment';
+import CommentSkeleton from './CommentSkeleton';
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 const styles = (theme) => ({
 	...theme.myCSS,
+	noComment: {
+		textAlign: 'center',
+		width: '100%',
+	},
 });
 
 const Comments = ({
@@ -26,14 +32,16 @@ const Comments = ({
 	}, []);
 
 	const commentsMarkup = comments === null ? (
-		<h2>loading</h2>
+		<CommentSkeleton />
 	) : (
 		comments.length === 0 ? (
-			<h2>No comments yet</h2>
+			<Typography variant="h5" className={classes.noComment}>
+				No  comments yet
+			</Typography>
 		) : (
 			comments.map((comment, index) => (
-				<Fragment>
-					<Comment key={comment.commentId} comment={comment} />
+				<Fragment  key={comment.commentId}>
+					<Comment comment={comment} />
 					{(index !== (comments.length - 1)) ? (
 						<hr className={classes.visibleSeparator} />
 					) : (null)}

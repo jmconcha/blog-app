@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -28,6 +28,10 @@ const Signup = ({
 	errors,
 	history,
 }) => {
+	useEffect(() => {
+		window.document.title = 'Blog - Signup';
+	}, []);
+
 	const [ email, setEmail ] = useState('');
 	const [ password, setPassword ] = useState('');
 	const [ confirmPassword, setConfirmPassword ] = useState('');

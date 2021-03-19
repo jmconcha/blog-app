@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -27,6 +27,10 @@ const Login = ({
 	errors,
 	history,
 }) => {
+	useEffect(() => {
+		window.document.title = 'Blog - Login';
+	}, []);
+
 	const [ email, setEmail ] = useState('');
 	const [ password, setPassword ] = useState('');
 
