@@ -115,7 +115,7 @@ export const getComments = (blogId) => (dispatch) => {
 	// fetch blog comments
 	db
 		.collection('comments')
-		.orderBy('createdAt', 'desc')
+		.orderBy('createdAt', 'asc')
 		.where('blogId', '==', blogId)
 		.get()
 		.then((commentsSnapshot) => {

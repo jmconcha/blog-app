@@ -79,8 +79,8 @@ const data = (
 			return {
 				...state,
 				comments: [
-					action.payload,
 					...state.comments,
+					action.payload,
 				],
 			};
 		case INCREMENT_LIKE:
