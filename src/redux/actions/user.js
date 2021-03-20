@@ -8,12 +8,15 @@ import {
 	SET_USER_LIKES,
 	USER_NOT_AUTHENTICATED,
 	SET_USER_IMAGE_URL,
-	SET_BLOG_IMAGE_URL,
 	SET_USER_DETAILS,
 	ADD_USER_LIKE,
 	REMOVE_USER_LIKE,
 	MARK_NOTIFICATIONS_READ,
 } from '../types';
+import {
+	setBlogImageUrl,
+	updateCommentImageUrl,
+} from './data';
 import {
 	setErrors,
 	clearErrors,
@@ -285,7 +288,6 @@ export const uploadImage = (imageFile, userId, oldImageUrl) => (dispatch) => {
 		.child(`images/${filename}`)
 		.put(imageFile, metadata)
 		.then(() => {
-			const batch = db.batch();
 			const imageUrl = `${imagesUrl}${filename}?alt=media`;
 			dispatch({
 				type: SET_USER_IMAGE_URL,
@@ -313,34 +315,8 @@ export const uploadImage = (imageFile, userId, oldImageUrl) => (dispatch) => {
 					console.error(err);
 				});
 
-			// update user blog posts imageUrl
-			db
-				.collection('blogs')
-				.where('username', '==', userId)
-				.get()
-				.then((blogsSnapshot) => {
-					blogsSnapshot.forEach((blog) => {
-						batch.update(blog.ref, { imageUrl });
-					});
-					// commit update
-					batch
-						.commit()
-						.then(() => {
-							dispatch({
-								type: SET_BLOG_IMAGE_URL,
-								payload: {
-									imageUrl,
-									username: userId,
-								},
-							});
-						})
-						.catch((err) => {
-							console.error(err);
-						});
-				})
-				.catch((err) => {
-					console.error(err);
-				});
+			dispatch(setBlogImageUrl(userId, imageUrl));
+			dispatch(updateCommentImageUrl(userId, imageUrl));
 		})
 		.catch((err) => {
 			console.error(err);

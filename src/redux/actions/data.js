@@ -11,6 +11,7 @@ import {
 	INCREMENT_LIKE,
 	DECREMENT_LIKE,
 	INCREMENT_COMMENT_COUNT,
+	SET_BLOG_IMAGE_URL,
 } from '../types';
 import {
 	setErrors,
@@ -318,6 +319,64 @@ export const decrementBlogLikeCount = (blogId) => (dispatch) => {
 				type: DECREMENT_LIKE,
 				payload: blogId,
 			});
+		})
+		.catch((err) => {
+			console.error(err);
+		});
+};
+
+// update user blog posts imageUrl
+export const setBlogImageUrl = (userId, imageUrl) => (dispatch) => {
+	const batch = db.batch();
+
+	db
+		.collection('blogs')
+		.where('username', '==', userId)
+		.get()
+		.then((blogsSnapshot) => {
+			blogsSnapshot.forEach((blog) => {
+				batch.update(blog.ref, { imageUrl });
+			});
+			// commit update
+			batch
+				.commit()
+				.then(() => {
+					dispatch({
+						type: SET_BLOG_IMAGE_URL,
+						payload: {
+							imageUrl,
+							username: userId,
+						},
+					});
+				})
+				.catch((err) => {
+					console.error(err);
+				});
+		})
+		.catch((err) => {
+			console.error(err);
+		});
+};
+
+
+// update user comments imageUrl on blog posts
+export const updateCommentImageUrl = (userId, imageUrl) => (dispatch) => {
+	const batch = db.batch();
+	
+	db
+		.collection('comments')
+		.where('username', '==', userId)
+		.get()
+		.then((commentsSnapshot) => {
+			commentsSnapshot.forEach((comment) => {
+				batch.update(comment.ref, { imageUrl });
+			});
+			// commit update
+			batch
+				.commit()
+				.catch((err) => {
+					console.error(err);
+				});
 		})
 		.catch((err) => {
 			console.error(err);
