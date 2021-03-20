@@ -12,6 +12,7 @@ import {
 	ADD_USER_LIKE,
 	REMOVE_USER_LIKE,
 	MARK_NOTIFICATIONS_READ,
+	REMOVE_NOTIFICATIONS,
 } from '../types';
 import {
 	setBlogImageUrl,
@@ -365,7 +366,10 @@ export const removeUserLike = (likeId) => (dispatch) => {
 export const markNotificationsRead = (unreadNotificationIds) => (dispatch) => {
 	const batch = db.batch();
 	unreadNotificationIds.forEach((notifId) => {
-		batch.delete(db.doc(`/notifications/${notifId}`));
+		batch.update(
+			db.doc(`/notifications/${notifId}`),
+			{ read: true }
+		);
 	});
 	batch
 	.commit()
@@ -377,5 +381,12 @@ export const markNotificationsRead = (unreadNotificationIds) => (dispatch) => {
 	})
 	.catch((err) => {
 		console.error(err);
+	});
+};
+
+export const removeNotifications = (notificationIds) => (dispatch) => {
+	dispatch({
+		type: REMOVE_NOTIFICATIONS,
+		payload: notificationIds,
 	});
 };

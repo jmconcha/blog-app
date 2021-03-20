@@ -22,6 +22,7 @@ import {
 import {
 	addUserLike,
 	removeUserLike,
+	removeNotifications,
 } from './user';
 
 export const getBlogs = (userId) => (dispatch) => {
@@ -101,6 +102,10 @@ export const deleteBlog = (blogId) => (dispatch) => {
 		.doc(`/blogs/${blogId}`)
 		.delete()
 		.then(() => {
+			// delete all documents related to this blog
+			// from (likes, comments, notifications) collection
+			dispatch(deleteLinkedDocuments(blogId));
+
 			dispatch({
 				type: REMOVE_BLOG,
 				payload: blogId,
@@ -109,6 +114,63 @@ export const deleteBlog = (blogId) => (dispatch) => {
 		.catch((err) => {
 			console.error(err);
 		})
+};
+
+const deleteLinkedDocuments = (blogId) => (dispatch) => {
+	const batch = db.batch();
+	// delete likes in this blog (blogId)
+	const deleteLikeQuery = db
+		.collection('likes')
+		.where('blogId', '==', blogId)
+		.get()
+		.then((likesSnapshot) => {
+			likesSnapshot.forEach((like) => {
+				batch.delete(like.ref);
+			});
+		});
+
+	// delete comments in this blog (blogId)
+	const deleteCommentQuery = db
+		.collection('comments')
+		.where('blogId', '==', blogId)
+		.get()
+		.then((commentsSnapshot) => {
+			commentsSnapshot.forEach((comment) => {
+				batch.delete(comment.ref);
+			});
+		});
+
+	// delete notifications in this blog (blogId)
+	const deleteNotificationQuery = db
+		.collection('notifications')
+		.where('blogId', '==', blogId)
+		.get()
+		.then((notificationsSnapshot) => {
+			const notificationIds = [];
+			notificationsSnapshot.forEach((notif) => {
+				notificationIds.push(notif.id);
+				batch.delete(notif.ref);
+			});
+			// remove notifications on redux
+			dispatch(removeNotifications(notificationIds));
+		});
+
+	Promise
+		.all([
+			deleteLikeQuery,
+			deleteCommentQuery,
+			deleteNotificationQuery
+		])
+		.then(() => {
+			batch
+				.commit()
+				.catch((err) => {
+					console.error(err);
+				});
+		})
+		.catch((err) => {
+			console.error(err);
+		});
 };
 
 export const getComments = (blogId) => (dispatch) => {

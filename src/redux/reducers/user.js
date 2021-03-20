@@ -11,6 +11,7 @@ import {
 	SET_USER_NOTIFICATIONS,
 	REMOVE_USER_LIKE,
 	MARK_NOTIFICATIONS_READ,
+	REMOVE_NOTIFICATIONS,
 } from '../types';
 
 const user = (
@@ -110,6 +111,13 @@ const user = (
 					}
 					return notif;
 				}),
+			};
+		case REMOVE_NOTIFICATIONS:
+			return {
+				...state,
+				notifications: state.notifications.filter(
+					(notif) => !(action.payload.includes(notif.notificationId))
+				),
 			};
 		default:
 			return state;

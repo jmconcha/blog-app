@@ -7,6 +7,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { markNotificationsRead } from '../../redux/actions/user';
 // MUI Components
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import MuiLink from '@material-ui/core/Link';
@@ -32,6 +33,12 @@ const useStyles = makeStyles({
     '&:hover': {
       textDecoration: 'underline',
       textDecorationColor: '#4267B2',
+    },
+  },
+  noNotification: {
+    cursor: 'default',
+    '&:hover': {
+      backgroundColor: 'transparent',
     },
   },
 });
@@ -90,32 +97,40 @@ const Notifications = ({ notifications, markNotificationsRead }) => {
     </Tooltip>
   );
 
-  const menuItemsMarkup = notifications.map((notif) => {
-    const verb = notif.type === 'like' ? 'liked' : 'commented on';
-    const color = notif.read ? 'primary' : 'secondary';
-    const icon = notif.type === 'like' ? (
-      <FavoriteIcon color={color} className={classes.icon} />
-    ) : (
-      <MessageIcon color={color} className={classes.icon} />
-    );
-    const timelapse = dayjs(notif.createdAt).fromNow();
+  const menuItemsMarkup = notifications.length > 0 ? (
+    notifications.map((notif) => {
+      const verb = notif.type === 'like' ? 'liked' : 'commented on';
+      const color = notif.read ? 'primary' : 'secondary';
+      const icon = notif.type === 'like' ? (
+        <FavoriteIcon color={color} className={classes.icon} />
+      ) : (
+        <MessageIcon color={color} className={classes.icon} />
+      );
+      const timelapse = dayjs(notif.createdAt).fromNow();
 
-    return (
-      <MenuItem key={notif.notificationId} className={classes.menuItem}>
-        <MuiLink
-          component={Link}
-          to={`/users/${notif.recipient}/blogs/${notif.blogId}`}
-          color="inherit"
-          variant="body2"
-          underline="none"
-          onClick={handleClose}
-          className={classes.link}
-        >
-          {icon}{`${notif.sender} ${verb} your blog (${timelapse})`}
-        </MuiLink>
-      </MenuItem>
-    );
-  });
+      return (
+        <MenuItem key={notif.notificationId} className={classes.menuItem}>
+          <MuiLink
+            component={Link}
+            to={`/users/${notif.recipient}/blogs/${notif.blogId}`}
+            color="inherit"
+            variant="body2"
+            underline="none"
+            onClick={handleClose}
+            className={classes.link}
+          >
+            {icon}{`${notif.sender} ${verb} your blog (${timelapse})`}
+          </MuiLink>
+        </MenuItem>
+      );
+    })
+  ) : (
+    <MenuItem className={classes.noNotification}>
+      <Typography variant="body2">
+        You have no notifications yet
+      </Typography>
+    </MenuItem>
+  );
 
   return (
     <Fragment>
